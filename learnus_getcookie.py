@@ -48,7 +48,7 @@ def get_cookies(username, password):
 
 if __name__ == "__main__":
     # 替换为你的用户名和密码
-    username = "your_username"
-    password = "your_password"
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
 
     get_cookies(username, password)
