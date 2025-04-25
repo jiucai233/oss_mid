@@ -24,4 +24,12 @@ def get_links(cookies):
         print(f"Failed to fetch HTML. Status code: {response.status_code}")
         return None
 
+if __name__ == "__main__":
+    with open('cookies.json', 'r') as file:
+        cookies_list = json.load(file)
 
+    # Convert cookies list to a dictionary
+    cookies = {cookie['name']: cookie['value'] for cookie in cookies_list}
+    links = get_links(cookies)
+    for link in links:
+        print(link)
