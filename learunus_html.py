@@ -5,6 +5,7 @@ from selenium.common.exceptions import UnexpectedAlertPresentException, NoSuchEl
 from selenium.webdriver.common.alert import Alert
 from learnus_calendar import get_links
 from learnus_getcookie import get_cookies
+import requests
 
 def link_to_html():
     # Initialize driver as None outside the loop
