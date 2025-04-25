@@ -3,51 +3,50 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 import json
-# 设置浏览器驱动（确保已安装对应的浏览器驱动程序，如 chromedriver）
 
 def get_cookies(username, password):
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome()  # Initialize the WebDriver
 
     try:
-        # 打开登录页面
+        # Open the login page
         driver.get("https://ys.learnus.org/login/method/sso.php")
 
-        # 输入用户名
+        # Enter username
         username_field = driver.find_element(By.NAME, "username")
-        username_field.send_keys(username)  # 替换为你的用户名
+        username_field.send_keys(username)
 
-        # 输入密码
+        # Enter password
         password_field = driver.find_element(By.NAME, "password")
-        password_field.send_keys(password)  # 替换为你的密码
+        password_field.send_keys(password)
 
-        # 提交表单
+        # Submit the form
         password_field.send_keys(Keys.RETURN)
 
-        # 等待页面加载完成
+        # Wait for the page to load
         time.sleep(3)
 
-        # 检查是否跳转到首页
+        # Check if login was successful
         if driver.current_url == "https://ys.learnus.org/":
-            print("登录成功！")
+            print("Login successful!")
 
-            # 获取登录后的 Cookie
+            # Get cookies after login
             cookies = driver.get_cookies()
             print("Cookies:", cookies)
-            # 将 Cookie 保存到 JSON 文件中
+
+            # Save cookies to a JSON file
             with open("cookies.json", "w") as cookie_file:
                 json.dump(cookies, cookie_file)
-            print("Cookies 已保存到 cookies.json 文件中。")
-            return cookies
+            print("Cookies saved to cookies.json.")
+            return cookies, driver  # Return cookies and driver
         else:
-            print("登录失败！请检查用户名和密码。")
-            return None
+            print("Login failed! Please check your username and password.")
+            return None, driver  # Return driver even if login fails
 
-    finally:
-        # 关闭浏览器
-        driver.quit()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None, driver  # Return driver in case of an error
 
 if __name__ == "__main__":
-    # 替换为你的用户名和密码
     username = input("Enter your username: ")
     password = input("Enter your password: ")
 
