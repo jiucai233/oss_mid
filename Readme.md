@@ -25,6 +25,7 @@ pip install -r requirement.txt
 ### Claude installation
 Open Claude->Settings->Developer->Edit Config
 
+```json
 {
     "mcpServers": {
         "learnus_calendar_html": {
@@ -33,6 +34,6 @@ Open Claude->Settings->Developer->Edit Config
         }
     }
 }
-
+```
 ## License
 This project is licensed under the terms described in the LICENCE file.
