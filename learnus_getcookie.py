@@ -25,7 +25,7 @@ def get_cookies(username, password):
         password_field.send_keys(Keys.RETURN)
         time.sleep(3)
 
-        if driver.current_url == "https://ys.learnus.org/":
+        if driver.current_url == "https://ys.learnus.org/"or driver.current_url =="https://ys.learnus.org/?lang=ko" or driver.current_url == "https://ys.learnus.org/index.php?lang=en":
             print("Login successful!")
             cookies = driver.get_cookies()
             with open("cookies.json", "w") as cookie_file:
