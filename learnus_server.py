@@ -11,11 +11,17 @@ def learnus_calendar_html() -> list:
     Retrieves a list of HTML content from LearnUS links and extracts information.
     """
     try:
-        html_list = link_to_html()
-        if html_list is None:
-            raise ValueError("Failed to retrieve HTML content or no links available.")
-        
-        # 提取每个 HTML 的信息
+        file_paths = [
+            "d:\\python\\oss\\midterm\\oss_mid\\calendar_1.html",
+            "d:\\python\\oss\\midterm\\oss_mid\\calendar_2.html",
+            "d:\\python\\oss\\midterm\\oss_mid\\calendar_3.html"
+        ]
+        html_list = []
+        for file_path in file_paths:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                html_content = file.read()
+                html_list.append(html_content)
+            
         extracted_data = [extract_info(html) for html in html_list]
         return {"data": extracted_data}
     except Exception as e:
