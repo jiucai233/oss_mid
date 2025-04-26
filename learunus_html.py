@@ -45,8 +45,8 @@ def link_to_html():
                     driver.quit()
                     driver = None
                 print(f"Attempt {retry_count + 1}/{MAX_RETRIES + 1}: cookies.json not found or invalid. Requesting login.")
-                username = input("Enter your username: ")
-                password = input("Enter your password: ")
+                username = "2022106103"  # Replace with your username
+                password = "Xinpig.123"  # Replace with your password
                 cookies_list, driver = get_cookies(username, password)  # driver is assigned (or re-assigned) here
 
             # --- Link Extraction ---
@@ -132,4 +132,12 @@ def link_to_html():
             print(f"\nAn error occurred during calendar reading phase: {final_err}")
 
     return None  # Return None if no links or errors occurred
+
+if __name__ == "__main__":
+    htmls = link_to_html()
+    i = 0
+    for html in htmls:
+        i += 1
+        with open(f'calendar_{i}.html', 'w', encoding='utf-8') as f:
+            f.write(html)
 
