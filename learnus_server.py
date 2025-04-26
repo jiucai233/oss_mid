@@ -4,6 +4,7 @@ from html_tojson import extract_info
 import os
 from learnus_getcookie import get_cookies as login_to_cookies
 import json
+from dotenv import load_dotenv
 
 # --- FastMCP Implementation ---
 mcp = FastMCP("LearnUsProcessor")
@@ -61,6 +62,40 @@ def learnus_calendar_html(resource: dict) -> dict:
         # Log the error and return it as a response
         print(f"Error in learnus_calendar_html: {e}")
         return {"error": str(e)}
+
+@mcp.tool()
+def Notion_upload(resource: dict) -> dict:
+    """
+    Stores the extracted data into Notion.
+    :param resource: A dictionary containing 'data' to be stored in Notion.
+    """
+    try:
+        # Assuming you have a function to store data in Notion
+        calendar_datas = resource.get("calendar_datas")
+        api_key = resource.get("api_key")
+        database_id = resource.get("database_id")
+
+        if not database_id:
+            return {"error": "database ID are required."}
+        
+        if not api_key:
+            if bool(load_dotenv()):
+                api_key = os.getenv("NotionAPIKey")
+            else:
+                return {"error": "API key is required."}
+
+        if not calendar_data:
+            return {"error": "Calendar data is required."}
+
+        Result = Notion_upload(calendar_data, api_key, database_id)
+        if not Result:
+            return {"error": "Failed to store data in Notion. Please check your API key and database ID."}
+        return {"message": "Data stored in Notion successfully."}
+    except Exception as e:
+        # Log the error and return it as a response
+        print(f"Error in store_to_notion: {e}")
+        return {"error": str(e)}
+    
 
 if __name__ == "__main__":
     print("Starting LearnUsProcessor MCP server...")
