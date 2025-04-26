@@ -41,15 +41,15 @@ def link_to_html(cookies_list):
         raise e  # Re-raise the exception for the caller to handle
 
 if __name__ == "__main__":
-    try:
-        htmls = link_to_html()
-        if htmls:
-            for i, html in enumerate(htmls, start=1):
-                with open(f'calendar_{i}.html', 'w', encoding='utf-8') as f:
-                    f.write(html)
-            print(f"Saved {len(htmls)} calendar HTML files.")
-        else:
-            print("No HTML files were retrieved.")
-    except Exception as e:
-        print(f"Failed to retrieve HTML content: {e}")
+    # Example usage
+    with open('cookies.json', 'r') as file:
+        cookies_list = json.load(file)
+
+    # Convert cookies list to a dictionary
+    cookies = {cookie['name']: cookie['value'] for cookie in cookies_list}
+    html_content = link_to_html(cookies)
+    if html_content:
+        print("HTML content retrieved successfully!")
+    else:
+        print("No HTML content retrieved.")
 
