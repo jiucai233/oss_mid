@@ -84,10 +84,10 @@ def Notion_upload(resource: dict) -> dict:
             else:
                 return {"error": "API key is required."}
 
-        if not calendar_data:
+        if not calendar_datas:
             return {"error": "Calendar data is required."}
 
-        Result = Notion_upload(calendar_data, api_key, database_id)
+        Result = Notion_upload(calendar_datas, api_key, database_id)
         if not Result:
             return {"error": "Failed to store data in Notion. Please check your API key and database ID."}
         return {"message": "Data stored in Notion successfully."}
