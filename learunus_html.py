@@ -7,7 +7,7 @@ from learnus_calendar import get_links
 from learnus_getcookie import get_cookies
 import requests
 
-def link_to_html():
+def link_to_html(username=None, password=None):
     # Initialize driver as None outside the loop
     driver = None
     links = None  # Initialize links as None
@@ -45,8 +45,6 @@ def link_to_html():
                     driver.quit()
                     driver = None
                 print(f"Attempt {retry_count + 1}/{MAX_RETRIES + 1}: cookies.json not found or invalid. Requesting login.")
-                username = "2022106103"  # Replace with your username
-                password = "Xinpig.123"  # Replace with your password
                 cookies_list, driver = get_cookies(username, password)  # driver is assigned (or re-assigned) here
 
             # --- Link Extraction ---
