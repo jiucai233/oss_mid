@@ -1,12 +1,27 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 import time
 import json
+import os
 
 def get_cookies(username, password):
-    driver = webdriver.Chrome()  # Initialize the WebDriver
+    """
+    Logs into LearnUS and retrieves cookies.
+    :param username: LearnUS username
+    :param password: LearnUS password
+    :return: Cookies as a list of dictionaries or None if login fails.
+    """
+    if os.path.exists("cookies.json"):
+        with open("cookies.json", "r") as cookie_file:
+            cookies = json.load(cookie_file)
+            print("Cookies loaded from cookies.json.")
+            return cookies
 
+    chrome_options = Options()
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    driver = webdriver.Chrome(options=chrome_options)
     try:
         # Open the login page
         driver.get("https://ys.learnus.org/login/method/sso.php")
@@ -37,14 +52,17 @@ def get_cookies(username, password):
             with open("cookies.json", "w") as cookie_file:
                 json.dump(cookies, cookie_file)
             print("Cookies saved to cookies.json.")
-            return cookies, driver  # Return cookies and driver
+            return cookies
         else:
             print("Login failed! Please check your username and password.")
-            return None, driver  # Return driver even if login fails
+            return None
 
     except Exception as e:
         print(f"An error occurred: {e}")
-        return None, driver  # Return driver in case of an error
+        return None
+
+    finally:
+        driver.quit()
 
 if __name__ == "__main__":
     username = input("Enter your username: ")
