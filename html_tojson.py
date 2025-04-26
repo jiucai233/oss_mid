@@ -11,14 +11,16 @@ def extract_info(html_content):
     title_element = soup.find('h2')
     title = title_element.text.strip() if title_element else "N/A"
 
-
-    link_with_title = soup.find('a', title=True)
-    if link_with_title and link_with_title['title']:
-        title += f" ({link_with_title['title']})"
     # 提取内容
     content_element = soup.find('div', {'id': 'intro'})
     content = content_element.get_text(separator="\n").strip() if content_element else "N/A"
     
+    # 提取 <a> 标签中的 href 链接
+    a_tag = soup.find('a', href=True, title=["과제","Assignment"])
+    if a_tag:
+        href_link = a_tag['href']
+        content = f"Link: {href_link}\n{content}"
+
     # 提取截止日期
     due_date_element = soup.find('td', string=["Due date", "종료 일시"])
     due_date = due_date_element.find_next_sibling('td').text.strip() if due_date_element else "N/A"
@@ -34,7 +36,6 @@ def extract_info(html_content):
         for file_link in file_links:
             content += f"\nFile Link: {file_link}"
         
-
     return {
         "Type": type,
         "Title": title,
@@ -43,7 +44,7 @@ def extract_info(html_content):
     }
 
 if __name__ == "__main__":
-# 示例：读取 HTML 文件并提取信息
+    # 示例：读取 HTML 文件并提取信息
     file_paths = [
         "d:\\python\\oss\\midterm\\oss_mid\\calendar_1.html",
         "d:\\python\\oss\\midterm\\oss_mid\\calendar_2.html",
