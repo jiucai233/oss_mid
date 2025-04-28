@@ -1,18 +1,13 @@
-# OSS_MID
+# MCP-LearnUS
 
 ## Overview
-**OSS_MID** is a collection of Python tools designed to interact with the LearnUs platform.  
-It includes modules for retrieving cookies, parsing calendars, converting HTML to JSON, and running a basic server to manage LearnUs data.
-
-This project was developed for an **Open Source Software (OSS)** course midterm assignment.
+**MCP-LearnUS** is a MCP tool designed to make Claude to interact with the LearnUs platform.  
+This project was developed for an **Open Source Software (OSS)** course midterm assignment by 申英君(SHEN YINGJUN) and 辛奎霖(SHIN GYULIM).
 
 ## Features
-- **learnus_getcookie.py**: Automates login and cookie retrieval from LearnUs.
-- **learnus_calendar.py**: Parses and extracts calendar event data.
-- **learunus_html.py**: Processes HTML content from LearnUs for easier data extraction.
-- **learnus_server.py**: A simple server to serve LearnUs data.
-- **html_tojson.py**: Converts LearnUs HTML structures into JSON format.
-- **NotionConnection.py**: Integration with Notion.
+- **learnus_getcookie**: Automates login and cookie retrieval from LearnUs.
+- **learnus_server**: A simple server to serve LearnUs data.
+- **NotionUpload**: Integration with Notion.
 
 ## Installation
 Clone the repository and install the required packages:
@@ -44,7 +39,9 @@ NotionDatabaseID = your_notion_database_id
 ```
 We would recommend you to keep the variable name, since it is used in the other file.
 
-Second, you need to create a Notion database and add the database ID to the `NotionConnection` file. Then add a connection in the database page
+Second, you need to add a connection in the database page(Notion Web page)
+
+__reference:__
 https://www.notion.com/help/add-and-manage-connections-with-the-api
 
 Finally, connect the database to the notion calendar.
