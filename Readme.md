@@ -40,8 +40,9 @@ This project uses Notion as a database. To use it, you need to create a Notion i
 
 ```.env
 NotionAPIKey = your_notion_api_key
+NotionDatabaseID = your_notion_database_id
 ```
-We would recommend you to name your API key as `NotionAPIKey`, since it is used in the `NotionConnection.py` file.
+We would recommend you to keep the variable name, since it is used in the other file.
 
 Second, you need to create a Notion database and add the database ID to the `NotionConnection` file. Then add a connection in the database page
 https://www.notion.com/help/add-and-manage-connections-with-the-api

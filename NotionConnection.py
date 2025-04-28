@@ -1,12 +1,10 @@
 import requests
 import os
 from dotenv import load_dotenv
-import json
-import resource
 
 load_dotenv()  # 加载 .env 文件
-api_key = os.getenv("NotionAPIKey")  # 获取值
-database_id = "1e05db4ddc178020b907fea9c4cc6c40"
+api_key = os.getenv("NotionAPIKey")  
+database_id = os.getenv("NotionDatabaseID")  
 
 headers = {
     "Authorization": f"Bearer {api_key}",  # 添加 Bearer 前缀
@@ -77,25 +75,12 @@ def create_notion_page(data, properties):
     else:
         print(f"页面创建失败，状态码：{response.status_code}, 错误信息：{response.text}")
 
+def Notion_upload(calendar_datas):
+    properties = get_database_properties()
 
-# 提供的 JSON 数据
+    # 遍历 JSON 数据并创建 Notion 页面
+    if properties:
+        for item in calendar_datas["data"]:
+            create_notion_page(item, properties)
 
-# Check if cookies are provided in the resource
-json_data = resource.get("json_data")
-if not json_data:
-    # If no cookies provided, try to load from json_data
-    if os.path.exists("json_data"):
-        with open("json_data", "r") as cookie_file:
-            json_data = json.load(cookie_file)
-        print("Loaded cookies from json_data.")
-    else:
-        raise ValueError("No cookies provided and json_data not found. Please log in first.")
-# 获取数据库属性
-properties = get_database_properties()
-
-# 遍历 JSON 数据并创建 Notion 页面
-if properties:
-    for item in json_data["data"]:
-        create_notion_page(item, properties)
-
-print("所有页面创建完成")
+    print("all pages created successfully")

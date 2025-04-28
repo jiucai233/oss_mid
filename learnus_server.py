@@ -5,7 +5,7 @@ import os
 from learnus_getcookie import get_cookies as login_to_cookies
 import json
 from dotenv import load_dotenv
-
+from NotionConnection import Notion_upload
 # --- FastMCP Implementation ---
 mcp = FastMCP("LearnUsProcessor")
 
@@ -64,17 +64,16 @@ def learnus_calendar_html(resource: dict) -> dict:
         return {"error": str(e)}
 
 @mcp.tool()
-def Notion_upload(resource: dict) -> dict:
+def Notion_upload_mcp(resource: dict) -> dict:
     """
     Stores the extracted data into Notion.
     :param resource: A dictionary containing 'data' to be stored in Notion.
     """
     try:
-        # Assuming you have a function to store data in Notion
+        # basic validation of the resource
         calendar_datas = resource.get("calendar_datas")
-        api_key = resource.get("api_key")
-        database_id = resource.get("database_id")
-
+        api_key = os.getenv("NotionAPIKey")  
+        database_id = os.getenv("NotionDatabaseID")          
         if not database_id:
             return {"error": "database ID are required."}
         
@@ -87,7 +86,8 @@ def Notion_upload(resource: dict) -> dict:
         if not calendar_datas:
             return {"error": "Calendar data is required."}
 
-        Result = Notion_upload(calendar_datas, api_key, database_id)
+        Notion_upload(calendar_datas)
+        Result = Notion_upload_mcp(calendar_datas, api_key, database_id)
         if not Result:
             return {"error": "Failed to store data in Notion. Please check your API key and database ID."}
         return {"message": "Data stored in Notion successfully."}
