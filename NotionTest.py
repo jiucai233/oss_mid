@@ -109,6 +109,12 @@ def notion_upload_calendar(api_key, database_id, json_datas):
     # 获取数据库属性
     properties = get_database_properties(headers, database_id)
 
+    # 初始化 result 变量
+    result = {
+        "message": "No data uploaded. Properties not found or empty.",
+        "status_code": 400
+    }
+
     # 遍历 JSON 数据并创建 Notion 页面
     if properties:
         for item in json_datas:  # 直接遍历 "data" 列表
@@ -121,6 +127,28 @@ def notion_upload_calendar(api_key, database_id, json_datas):
     
     return result
 
-
+if __name__ == "__main__":
+    # 示例数据
+    json_data = {
+        "data": [
+            {
+                "Type": "Assignment",
+                "Title": "Sample Title",
+                "Content": "Sample Content",
+                "Date": "2023-10-01"
+            },
+            {
+                "Type": "Project",
+                "Title": "Another Title",
+                "Content": "Another Content",
+                "Date": "2023-11-01"
+            }
+        ]
+    }
+    api_key = "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"  # 替换为你的 Notion API 密钥
+    database_id = "1e3d239b92368051a9f1c326a6a60d0e"  # 替换为你的 Notion 数据库 ID    
+    
+    result = notion_upload_calendar(api_key, database_id, json_data["data"])
+    print(result)
 
 
