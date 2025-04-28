@@ -5,7 +5,7 @@ import os
 from learnus_getcookie import get_cookies as login_to_cookies
 import json
 from dotenv import load_dotenv
-from NotionConnection import Notion_upload
+from NotionTest import notion_upload_calendar
 # --- FastMCP Implementation ---
 mcp = FastMCP("LearnUsProcessor")
 
@@ -64,38 +64,39 @@ def learnus_calendar_html(resource: dict) -> dict:
         return {"error": str(e)}
 
 @mcp.tool()
-def Notion_upload_mcp(resource: dict) -> dict:
+def Notion_upload(resource: dict) -> dict:
     """
     Stores the extracted data into Notion.
-    :param resource: A dictionary containing 'data' to be stored in Notion.
+    :param resource: A dictionary containing 'calendar_datas', 'api_key', and 'database_id'.
     """
     try:
-        # basic validation of the resource
-        calendar_datas = resource.get("calendar_datas")
-        api_key = os.getenv("NotionAPIKey")  
-        database_id = os.getenv("NotionDatabaseID")          
-        if not database_id:
-            return {"error": "database ID are required."}
-        
-        if not api_key:
+        # 获取资源中的数据
+        calendar_datas = resource.get("calendar_datas")  # 必须是符合格式的 JSON
+        api_key = resource.get("api_key")  # 必须是字符串
+        database_id = resource.get("database_id")  # 必须是字符串
+
+        if not isinstance(calendar_datas, dict) or "data" not in calendar_datas:
+            return {"error": "calendar_datas must be a dictionary with a 'data' key."}
+
+        if not isinstance(api_key, str) or not api_key:
             if bool(load_dotenv()):
-                api_key = os.getenv("NotionAPIKey")
-            else:
-                return {"error": "API key is required."}
+                api_key = os.getenv("NOTION_API_KEY")
+                if not api_key: 
+                    return {"error": "API key is required and must be a string."}
 
-        if not calendar_datas:
-            return {"error": "Calendar data is required."}
+        if not isinstance(database_id, str) or not database_id:
+            return {"error": "Database ID is required and must be a string."}
 
-        Notion_upload(calendar_datas)
-        Result = Notion_upload_mcp(calendar_datas, api_key, database_id)
+        # 调用 Notion 上传函数
+        Result = notion_upload_calendar(api_key, database_id, calendar_datas["data"])
         if not Result:
             return {"error": "Failed to store data in Notion. Please check your API key and database ID."}
+
         return {"message": "Data stored in Notion successfully."}
     except Exception as e:
-        # Log the error and return it as a response
-        print(f"Error in store_to_notion: {e}")
+        # 捕获并返回错误信息
+        print(f"Error in Notion_upload: {e}")
         return {"error": str(e)}
-    
 
 if __name__ == "__main__":
     print("Starting LearnUsProcessor MCP server...")
