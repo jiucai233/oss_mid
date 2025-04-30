@@ -5,7 +5,7 @@ import os
 from learnus_getcookie import get_cookies as login_to_cookies
 import json
 from dotenv import load_dotenv
-from NotionTest import notion_upload_calendar
+from NotionConnection import notion_upload_calendar
 # --- FastMCP Implementation ---
 mcp = FastMCP("LearnUsProcessor")
 
